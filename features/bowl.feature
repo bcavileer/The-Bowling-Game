@@ -15,19 +15,27 @@ Feature: Bowl a Game
     Then my score should be 20
 
   Scenario: bowls a spare
-    When I bowl a spare followed by two 1's
+    When I bowl a spare
+    And I bowl a one
     Then my score should be 13
 
   Scenario: bowls a strike
-    When I bowl a strike followed by two 1's
+    When I bowl a strike
+    And I bowl 2 ones
     Then my score should be 14
 
   Scenario: bowls a spare in the 10th frame
     When I bowl 18 zeroes
-    And I bowl a spare followed by two 1's
-    Then my score should be 13
+    And I bowl a spare
+    And I bowl a one
+    Then my score should be 12
 
   Scenario: bowls a strike in the 10th frame
     When I bowl 18 zeroes
-    And I bowl a strike followed by two 1's
-    Then my score should be 14
+    And I bowl a strike
+    And I bowl 2 ones
+    Then my score should be 12
+
+  Scenario: bowls a perfect game
+    When I bowl a perfect game
+    Then my score should be 300

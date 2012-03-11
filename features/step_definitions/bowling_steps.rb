@@ -4,6 +4,10 @@ Given 'I have a lane' do
   @game = BowlingGame.new
 end
 
+When /^I bowl a one$/ do
+  @game.bowl(1)
+end
+
 When /^I\ bowl\ (\d+|all)\ (zeroes|ones)$/ do |count, pin_count|
 
   case count
@@ -24,16 +28,16 @@ When /^I\ bowl\ (\d+|all)\ (zeroes|ones)$/ do |count, pin_count|
 
 end
 
-When /^I\ bowl\ a\ (spare|strike)\ followed\ by\ two\ 1's$/ do |special_type|
-  case special_type
-    when 'spare'
-      2.times { @game.bowl(5) }
-      2.times { @game.bowl(1) }
-    when 'strike'
-      @game.bowl(10)
-      2.times { @game.bowl(1) }
-    else raise ArgumentError
-  end
+When /^I bowl a spare$/ do
+  2.times { @game.bowl(5) }
+end
+
+When /^I bowl a strike$/ do
+  @game.bowl(10)
+end
+
+When "I bowl a perfect game" do
+  12.times { @game.bowl(10) }
 end
 
 Then "my score should be $score" do |score|

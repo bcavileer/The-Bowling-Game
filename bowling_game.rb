@@ -20,15 +20,31 @@ class BowlingGame
   def calculate_score
     score = 0
     frames = self.frames
-    frames.each_with_index do |frame, i|
-      score +=
-          if frame.first_box == 10
-            frame.frame_score + frames[i+1].frame_score
-          elsif frame.frame_score == 10
-            frame.frame_score + frames[i+1].first_box
-          else
-            frame.frame_score
-          end
+    frames.each_with_index do |current_frame, frame_number|
+      next_frame = frames[frame_number+1]
+      score +=  if next_frame
+                  if current_frame.strike?
+                    if frame_number < 9 # 10th frame, frame_number is zero indexed
+                      if next_frame.strike?
+                        30
+                      else
+                        10 + next_frame.frame_score
+                      end
+                    else
+                      10
+                    end
+                  elsif current_frame.spare?
+                    if frame_number < 9
+                      10 + next_frame.first_box
+                    else
+                      10
+                    end
+                  else
+                    current_frame.frame_score
+                  end
+                else
+                  current_frame.frame_score
+                end
     end
     score
   end
@@ -59,6 +75,14 @@ class Frame
 
   def first_box
     @first_box
+  end
+
+  def strike?
+    @first_box == 10
+  end
+
+  def spare?
+    @first_box + @second_box == 10
   end
 
 end
